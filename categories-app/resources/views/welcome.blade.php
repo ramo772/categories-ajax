@@ -425,8 +425,8 @@
                         Sub Category
                     </label>
                 </div>
-                <div id="selects" class="col-12 mb-3">
-                    <select class="form-select mb-3" onchange="omarr(this)" id="category_0" name="parent_id">
+                <div id="selects"  class="col-12 mb-3">
+                    <select class="form-select mb-3" onchange="omarr(this)" id="0" name="parent_id">
                         <option>Please choose category</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -441,12 +441,7 @@
                 </div> --}}
                 <br>
             @endif
-            <div class="col-12 mb-3">
-                <button type="submit">Submit</button>
-            </div>
-            <div class="col-12 mb-3">
-                <button type="submit">reset</button>
-            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 </body>
@@ -455,17 +450,30 @@
 
 <script type="text/javascript">
     function ActiveSub() {
-        var subselect = document.getElementById("subs");
+        var subselect = document.getElementById("0");
         subselect.disabled = !subselect.disabled;
     }
     var i = 0;
+
     function omarr(e) {
+        console.log(e.id);
         var cat_id = e.value;
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        if (e.id < i) {
+            for (let n = e.id+1; n <= i; n++) {
+                // console.log(n);
+                var $myDiv = document.getElementById(n);
+                if ($myDiv != null) {
+                    console.log($myDiv);
+                    $myDiv.remove();
+                }
+            }
+            i = e.id;
+        }
         $.ajax({
             url: "{{ url('categories') }}" + '/' + cat_id,
             type: "get",
@@ -473,20 +481,16 @@
                 cat_id: cat_id
             },
             success: function(data) {
-                console.log(i);
-                if()
-                var $myDiv = $(`.omar${i+1}`);
-                $myDiv.remove();
                 if (data.length != 0) {
                     $('#selects').append(
-                        `<select class="form-select mb-3 omar${i+1}" name="parent_id" onchange="omarr(this)" id="category_${i+1}" >` +
+                        `<select class="form-select mb-3 omar${i+1}" name="parent_id" onchange="omarr(this)" id="${i+1}" >` +
                         "add sub category" + '</select>');
                     $(`#category_${i+1}`).empty();
-                    $(`#category_${i+1}`).append('<option>' + "add sub category" +
+                    $(`#${i+1}`).append(`<option value = "${e.value}">` + "add sub category" +
                         '</option>');
                     $.each(data, function(index,
                         subcategory) {
-                        $(`#category_${i+1}`).append('<option value="' +
+                        $(`#${i+1}`).append('<option value="' +
                             subcategory
                             .id + '">' + subcategory.name + '</option>');
                     })
