@@ -425,7 +425,7 @@
                         Sub Category
                     </label>
                 </div>
-                <div id="selects"  class="col-12 mb-3">
+                <div id="selects" class="col-12 mb-3">
                     <select class="form-select mb-3" onchange="omarr(this)" id="0" name="parent_id">
                         <option>Please choose category</option>
                         @foreach ($categories as $category)
@@ -442,7 +442,10 @@
                 <br>
             @endif
             <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" onclick="window.location.reload();" class="btn btn-danger mt-3">Reset</button>
+
         </form>
+
     </div>
 </body>
 
@@ -455,6 +458,7 @@
     }
     var i = 0;
 
+
     function omarr(e) {
         console.log(e.id);
         var cat_id = e.value;
@@ -464,8 +468,9 @@
             }
         });
         if (e.id < i) {
-            for (let n = e.id+1; n <= i; n++) {
-                // console.log(n);
+            id = e.id;
+            for (let n = ++id; n <= i; n++) {
+                console.log(n);
                 var $myDiv = document.getElementById(n);
                 if ($myDiv != null) {
                     console.log($myDiv);
@@ -482,11 +487,18 @@
             },
             success: function(data) {
                 if (data.length != 0) {
+                    if (i >= 1) {
+                        var preSelect = document.getElementById(i - 1);
+                        preSelect.disabled = true;
+                    }
+
+
                     $('#selects').append(
                         `<select class="form-select mb-3 omar${i+1}" name="parent_id" onchange="omarr(this)" id="${i+1}" >` +
                         "add sub category" + '</select>');
                     $(`#category_${i+1}`).empty();
-                    $(`#${i+1}`).append(`<option value = "${e.value}">` + "add sub category" +
+                    $(`#${i+1}`).append(`<option class = "hidden" value = "${e.value}">` +
+                        "add sub category" +
                         '</option>');
                     $.each(data, function(index,
                         subcategory) {
@@ -503,9 +515,4 @@
             }
         })
     };
-    $(document).ready(function() {
-
-
-
-    });
 </script>
