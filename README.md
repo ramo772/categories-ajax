@@ -24,7 +24,7 @@ Next you need to make a copy of the `.env.example` file and rename it to `.env` 
 
 Run the database migrations (**Set the database connection in .env before migrating**)
 ```
-    php artisan migrate
+php artisan migrate
 ```
 
 Then start your server:
