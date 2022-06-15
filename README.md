@@ -1,9 +1,9 @@
 # categories-ajax
 
-##about the project
+## about the project
 unlimited tree of selections and options to create unlimited categories with unlimited levels.
 
-##bulid-with
+## bulid-with
 PHP
 Laravel
 MySQL
